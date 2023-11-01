@@ -14,31 +14,29 @@
 ## along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 ## -*- texinfo -*-
-## @deftypefn {} {@var{retval} =} MyGivens (@var{input1}, @var{input2})
+## @deftypefn {} {@var{retval} =} LineBinarySearch (@var{input1}, @var{input2})
 ##
 ## @seealso{}
 ## @end deftypefn
 
 ## Author: Ferry. S <Ferry. S@DESKTOP-O4ELN0M>
-## Created: 2023-10-03
+## Created: 2023-11-01
 
-function [R, bt] = MyGivens (A, b)
-  [m, n] = size(A);
-  A = [A b];
-
-  for i=1:n
-    for j=i+1:m
-      x = A(i,i)
-      y = A(j,i)
-      r = sqrt(x*x + y*y);
-      cosine = x/r;
-      sine = y/r;
-      tmp = cosine * A(i,i:n+1) + sine * A(j,i:n+1);
-      A(j,i:n+1) = -sine * A(i,i:n+1) + cosine * A(j,i:n+1);
-      A(i,i:n+1) = tmp;
-    endfor
-  endfor
-
-  R = A(:,1:n);
-  bt = A(:,n+1);
+function a = LineBinarySearch (f, x0)
+  a1 = 0;
+  a2 = 1;
+  tol = 1e-5;
+  while (a2 - a1) > tol
+    p = -grad(f, x0);
+    x1 = x0 + a1*p;
+    x2 = x0 + a2*p;
+    f1 = f(x1);
+    f2 = f(x2);
+    if f1 < f2
+      a2 = (a1 + a2)/2;
+    else
+      a1 = (a1 + a2)/2;
+    endif
+  endwhile
+  a = (a1 + a2)/2;
 endfunction
